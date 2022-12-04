@@ -27,26 +27,45 @@ func GetPriority(letter string) (int, error) {
 	return 0, errors.New("No match found")
 }
 
-// get matching characters
+// get matching characters (in O(n) 🥳)
 func GetMatch(base string, compare string) (string, error) {
-	for _, first := range base {
-		for _, second := range compare {
-			if first == second {
-				return string(first), nil
-			}
+	mappy := map[string]int{}
+
+	for _, v := range base {
+		if mappy[string(v)] == 0 {
+			mappy[string(v)] = 1
+		}
+	}
+
+	for _, v := range compare {
+		if mappy[string(v)] == 1 {
+			return string(v), nil
 		}
 	}
 
 	return "", errors.New("No matching characters found")
 }
 
-// get matching characters
+// get matching characters in group of 3 (in O(n) 🥳)
 func GetMatchInGroup(base string, compare string, compareAlso string) (string, error) {
-	for _, first := range base {
-		for _, second := range compare {
-			if first == second && isInString(compareAlso, string(first)) {
-				return string(first), nil
-			}
+	mappy := map[string]int{}
+
+	for _, v := range base {
+		if mappy[string(v)] == 0 {
+			mappy[string(v)] = 1
+		}
+	}
+
+	for _, v := range compare {
+		// only care about what was already present, so do not set any other value
+		if mappy[string(v)] == 1 {
+			mappy[string(v)] = 2
+		}
+	}
+
+	for _, v := range compareAlso {
+		if mappy[string(v)] == 2 {
+			return string(v), nil
 		}
 	}
 
