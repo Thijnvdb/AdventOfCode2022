@@ -1,7 +1,7 @@
 package puzzle2
 
 import (
-	common "aoc/day2/common"
+	"aoc/day2/common"
 	"errors"
 )
 

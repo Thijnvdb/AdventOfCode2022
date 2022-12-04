@@ -1,7 +1,7 @@
 package puzzle1
 
 import (
-	common "aoc/day2/common"
+	"aoc/day2/common"
 )
 
 // simulate game, return the score
