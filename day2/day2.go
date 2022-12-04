@@ -1,17 +1,15 @@
-package day2
+package main
 
 import (
-	puzzle1 "aoc/day2/puzzles/puzzle1"
-	puzzle2 "aoc/day2/puzzles/puzzle2"
-	"errors"
+	"aoc/day2/puzzles/puzzle1"
+	"aoc/day2/puzzles/puzzle2"
+	"aoc/shared"
+	"fmt"
 )
 
-func RunPuzzle(index int, inputFile string) error {
-	if index == 1 {
-		return puzzle1.Run(inputFile)
+func main() {
+	err := shared.RunPuzzle(puzzle1.Run, puzzle2.Run)
+	if err != nil {
+		fmt.Println("Error occured while running puzzle:", err.Error())
 	}
-	if index == 2 {
-		return puzzle2.Run(inputFile)
-	}
-	return errors.New("puzzle index was not valid")
 }

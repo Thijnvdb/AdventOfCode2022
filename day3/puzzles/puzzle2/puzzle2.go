@@ -2,7 +2,7 @@ package puzzle2
 
 import (
 	"aoc/day3/common"
-	"aoc/shared"
+	shared "aoc/shared"
 	"fmt"
 )
 
