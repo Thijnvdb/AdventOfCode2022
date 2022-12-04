@@ -27,18 +27,18 @@ func GetPriority(letter string) (int, error) {
 	return 0, errors.New("No match found")
 }
 
-// get matching characters (in O(n) 🥳)
+// get matching characters
 func GetMatch(base string, compare string) (string, error) {
-	mappy := map[string]int{}
+	mappy := map[rune]int{} // rune should make insert more gooder, since no hash conflict resolution but idk
 
 	for _, v := range base {
-		if mappy[string(v)] == 0 {
-			mappy[string(v)] = 1
+		if mappy[v] == 0 {
+			mappy[v] = 1
 		}
 	}
 
 	for _, v := range compare {
-		if mappy[string(v)] == 1 {
+		if mappy[v] == 1 {
 			return string(v), nil
 		}
 	}
@@ -46,39 +46,28 @@ func GetMatch(base string, compare string) (string, error) {
 	return "", errors.New("No matching characters found")
 }
 
-// get matching characters in group of 3 (in O(n) 🥳)
+// get matching characters in group of 3
 func GetMatchInGroup(base string, compare string, compareAlso string) (string, error) {
-	mappy := map[string]int{}
+	mappy := map[rune]int{} // rune should make insert more gooder, since no hash conflict resolution but idk
 
 	for _, v := range base {
-		if mappy[string(v)] == 0 {
-			mappy[string(v)] = 1
+		if mappy[v] == 0 {
+			mappy[v] = 1
 		}
 	}
 
 	for _, v := range compare {
 		// only care about what was already present, so do not set any other value
-		if mappy[string(v)] == 1 {
-			mappy[string(v)] = 2
+		if mappy[v] == 1 {
+			mappy[v] = 2
 		}
 	}
 
 	for _, v := range compareAlso {
-		if mappy[string(v)] == 2 {
+		if mappy[v] == 2 {
 			return string(v), nil
 		}
 	}
 
 	return "", errors.New("No matching characters found")
-}
-
-// check if char is in string
-func isInString(base string, letter string) bool {
-	for _, v := range base {
-		if letter == string(v) {
-			return true
-		}
-	}
-
-	return false
 }
