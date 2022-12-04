@@ -29,7 +29,7 @@ func ReadFile(file_path string) ([]string, error) {
 	return lines, nil
 }
 
-// Read file string array (each entry containing 1 line)
+// Read file as a string
 func ReadFileAsString(file_path string) (string, error) {
 	file, err := os.ReadFile(file_path)
 	if err != nil {
