@@ -1,7 +1,7 @@
 package puzzle1
 
 import (
-	"aoc/day4/puzzles/common"
+	"aoc/day4/common"
 	"fmt"
 )
 

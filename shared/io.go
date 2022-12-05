@@ -7,8 +7,8 @@ import (
 )
 
 // Read file string array (each entry containing 1 line)
-func ReadFile(file_path string) ([]string, error) {
-	file, err := os.Open(file_path)
+func ReadFile(filePath string) ([]string, error) {
+	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("An error occurred while Reading the file: %v", err.Error())
 	}
@@ -30,8 +30,8 @@ func ReadFile(file_path string) ([]string, error) {
 }
 
 // Read file as a string
-func ReadFileAsString(file_path string) (string, error) {
-	file, err := os.ReadFile(file_path)
+func ReadFileAsString(filePath string) (string, error) {
+	file, err := os.ReadFile(filePath)
 	if err != nil {
 		return "", fmt.Errorf("An error occurred while Reading the file: %v", err.Error())
 	}
