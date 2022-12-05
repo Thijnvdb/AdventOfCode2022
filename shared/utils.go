@@ -23,3 +23,12 @@ func RunPuzzle(puzzle1 func(string) error, puzzle2 func(string) error) error {
 
 	return errors.New("No puzzle found...")
 }
+
+func Reverse[T any](list []T) []T {
+	newList := []T{}
+	for i := len(list) - 1; i >= 0; i-- {
+		newList = append(newList, list[i])
+	}
+
+	return newList
+}

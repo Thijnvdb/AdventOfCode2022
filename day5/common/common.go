@@ -102,7 +102,7 @@ func PrintState(state []*types.Stack[string]) {
 			max = len(vals)
 		}
 
-		items = append(items, vals)
+		items = append(items, shared.Reverse(vals))
 	}
 
 	for y := max; y >= 0; y-- {
