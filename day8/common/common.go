@@ -36,45 +36,6 @@ func (trees TreeLine) Swap(i, j int) {
 	trees[i], trees[j] = trees[j], trees[i]
 }
 
-func ParseInput(input string) ([]TreeLine, error) {
-	lines, err := shared.ReadFile(input)
-	if err != nil {
-		return nil, err
-	}
-
-	result := []TreeLine{}
-
-	for i := 0; i < len(lines[0]); i++ {
-		result = append(result, TreeLine{})
-	}
-
-	for y, line := range lines {
-		for x, character := range line {
-			size := int(character - '0')
-			result[x] = append(result[x], NewTree(x, y, size))
-		}
-	}
-
-	return result, nil
-}
-
-// calculate scenic scores, return most viable tree
-func CalculateScenicScores(forest []TreeLine) *Tree {
-	max := new(Tree)
-	max.ScenicScore = 0 // awful tree yuck
-
-	for _, treeCol := range forest {
-		for _, tree := range treeCol {
-			score := tree.GetScenicScore(forest)
-			if score > max.ScenicScore {
-				max = tree
-			}
-		}
-	}
-
-	return max
-}
-
 func (tree *Tree) GetScenicScore(forest []TreeLine) int {
 	left, right := tree.getScenicScoreHorizontal(forest)
 	top, bottom := tree.getScenicScoreVertical(forest)
@@ -151,83 +112,26 @@ func (tree *Tree) getScenicScoreVertical(forest []TreeLine) (int, int) {
 	return scenicTop, scenicBottom
 }
 
-func GetVisible(forest []TreeLine) *hashset.Set {
-	set := hashset.New()
-	addTreesToSet(getVisibleFromHorizontalSide(forest, true), set)
-	addTreesToSet(getVisibleFromHorizontalSide(forest, false), set)
-	addTreesToSet(getVisibleFromVerticalSide(forest, true), set)
-	addTreesToSet(getVisibleFromVerticalSide(forest, false), set)
-
-	return set
-}
-
-func addTreesToSet(treelines []TreeLine, set *hashset.Set) {
-	for _, line := range treelines {
-		for _, tree := range line {
-			set.Add(tree)
-		}
-	}
-}
-
-func getVisibleFromHorizontalSide(forest []TreeLine, left bool) []TreeLine {
-	visible := []TreeLine{}
-
-	// iterate over vertical tree lines (top to bottom)
-	for i := 0; i < len(forest[0]); i++ {
-		treeRow := TreeLine{}
-		for _, treeCol := range forest {
-			treeRow = append(treeRow, treeCol[i])
-		}
-
-		if !left {
-			treeRow = shared.Reverse(treeRow)
-		}
-
-		// first always visible
-		visibleInRow := TreeLine{treeRow[0]}
-		middle := treeRow[1:]
-
-		largestPrev := treeRow[0].Size
-		for _, tree := range middle {
-			if tree.Size > largestPrev {
-				largestPrev = tree.Size
-				visibleInRow = append(visibleInRow, tree)
-			}
-		}
-
-		visible = append(visible, visibleInRow)
+func ParseInput(input string) ([]TreeLine, error) {
+	lines, err := shared.ReadFile(input)
+	if err != nil {
+		return nil, err
 	}
 
-	return visible
-}
+	result := []TreeLine{}
 
-func getVisibleFromVerticalSide(forest []TreeLine, top bool) []TreeLine {
-	visible := []TreeLine{}
-
-	// iterate over vertical tree lines (top to bottom)
-	for _, treeCol := range forest {
-		col := treeCol
-
-		if !top {
-			col = shared.Reverse(col)
-		}
-
-		// first always visible
-		visibleInCol := TreeLine{col[0]}
-		middle := col[1:]
-
-		largestPrev := col[0].Size
-		for _, tree := range middle {
-			if tree.Size > largestPrev {
-				largestPrev = tree.Size
-				visibleInCol = append(visibleInCol, tree)
-			}
-		}
-
-		visible = append(visible, visibleInCol)
+	for i := 0; i < len(lines[0]); i++ {
+		result = append(result, TreeLine{})
 	}
 
-	return visible
+	for y, line := range lines {
+		for x, character := range line {
+			size := int(character - '0')
+			result[x] = append(result[x], NewTree(x, y, size))
+		}
+	}
+
+	return result, nil
 }
 
 func PrintForest(forest []TreeLine) {
