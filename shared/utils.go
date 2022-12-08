@@ -11,7 +11,7 @@ func RunPuzzle(puzzle1 func(string) error, puzzle2 func(string) error) error {
 	file_path := os.Args[2]
 
 	if errPuzzle != nil || puzzleIn > 2 || puzzleIn < 1 {
-		return errors.New("Given puzzle index was not valid")
+		return errors.New("given puzzle index was not valid")
 	}
 
 	puzzle := int(puzzleIn)
@@ -21,7 +21,7 @@ func RunPuzzle(puzzle1 func(string) error, puzzle2 func(string) error) error {
 		return puzzle2(file_path)
 	}
 
-	return errors.New("No puzzle found...")
+	return errors.New("no puzzle found")
 }
 
 func Reverse[T any](list []T) []T {
