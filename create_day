@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+    echo "No argument supplied"
+    exit 1
+fi
+
+
+DAY=$1
+SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+DIR="${SCRIPT_DIR}/day${DAY}"
+if [ -d "$DIR" ];
+then
+    echo "day${DAY} directory already exists."
+    exit 1
+else
+    mkdir ${DIR}
+    mkdir ${DIR}/puzzles 
+    mkdir ${DIR}/puzzles/puzzle1
+    mkdir ${DIR}/puzzles/puzzle2
+    mkdir ${DIR}/input
+    mkdir ${DIR}/common
+
+    cat ./day_template/day.go.bak | sed -e "s|<<DAY>>|$DAY|g" >> ${DIR}/day${DAY}.go
+    cat ./day_template/common.go.bak >> ${DIR}/common/common.go
+    cat ./day_template/puzzle.go.bak | sed -e "s|<<PUZZLE>>|1|g" >> ${DIR}/puzzles/puzzle1/puzzle1.go 
+    cat ./day_template/puzzle.go.bak | sed -e "s|<<PUZZLE>>|2|g" >> ${DIR}/puzzles/puzzle2/puzzle2.go
+    exit 0
+fi

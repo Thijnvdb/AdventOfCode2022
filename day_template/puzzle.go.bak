@@ -1,0 +1,5 @@
+package puzzle<<PUZZLE>>
+
+func Run(inputFile string) error {
+	return nil
+}
