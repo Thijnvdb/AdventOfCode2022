@@ -15,7 +15,7 @@ func Run(inputFile string) error {
 
 	fmt.Printf("Rope size: %v", rope.GetRopeSize())
 
-	common.SimulateMoves(rope, moves)
+	common.SimulateMoves(rope, moves, false)
 
 	tail := rope.GetTail()
 

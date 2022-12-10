@@ -5,7 +5,6 @@ import (
 	. "aoc/shared/types"
 	"bufio"
 	"fmt"
-	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -71,31 +70,6 @@ func (ropePoint *RopePoint) AddChild(child *RopePoint) {
 	ropePoint.child = child
 }
 
-func (ropePoint *RopePoint) GetDistanceToParent() int {
-	diff := VectorSubtract(ropePoint.parent.Position, ropePoint.Position)
-
-	nonVerticalDiff := math.Abs(float64(diff.X) - float64(diff.Y))
-	return int(math.Min(float64(diff.X), float64(diff.Y))) + int(nonVerticalDiff)
-}
-
-func (head *RopePoint) Move(move Vector) {
-	head.History = append(head.History, head.Position)
-	head.Position.Add(move)
-
-	if head.child != nil {
-		// move to make by child
-		move = VectorSubtract(head.History[len(head.History)-1], head.child.Position)
-
-		fmt.Printf("vector for movement: X:%v Y:%v\n\n", move.X, move.Y)
-
-		head.child.History = append(head.child.History, head.child.Position) // add current move to position
-		head.child.Position = head.History[len(head.History)-1]
-
-		head.child.Adjust(move)
-	}
-
-}
-
 func (ropePoint *RopePoint) GetTail() *RopePoint {
 	if ropePoint.child == nil {
 		return ropePoint
@@ -104,26 +78,63 @@ func (ropePoint *RopePoint) GetTail() *RopePoint {
 	}
 }
 
-// to be called on the head of a rope
-func (ropePoint *RopePoint) Adjust(move Vector) {
-	if ropePoint.parent != nil && ropePoint.GetDistanceToParent() > 1 {
-		ropePoint.History = append(ropePoint.History, ropePoint.Position) // add current move to position
-		ropePoint.Position.Add(move)                                      // add move of parent
-		if ropePoint.child != nil {
-			ropePoint.child.Adjust(move)
+func (ropePoint *RopePoint) GetLastPosition() Vector {
+	return ropePoint.History[len(ropePoint.History)-1]
+}
+
+func (knot *RopePoint) Move(step Vector) {
+	knot.History = append(knot.History, knot.Position)
+	knot.Position.Add(step)
+
+	if knot.child != nil && GetDistanceBetweenKnots(knot, knot.child) > 1 {
+		move := ZeroVector()
+		if knot.Position.Y == knot.child.Position.Y {
+			// horizontal move
+			if knot.Position.X > knot.child.Position.X {
+				move.X = 1
+			} else {
+				move.X = -1
+			}
+		} else if knot.Position.X == knot.child.Position.X {
+			// vertical move
+			if knot.Position.Y > knot.child.Position.Y {
+				move.Y = 1
+			} else {
+				move.Y = -1
+			}
+		} else {
+			// diagonal move
+			if knot.Position.X > knot.child.Position.X {
+				move.X = 1
+			} else {
+				move.X = -1
+			}
+
+			if knot.Position.Y > knot.child.Position.Y {
+				move.Y = 1
+			} else {
+				move.Y = -1
+			}
 		}
+		knot.child.Move(move)
 	}
 }
 
-func SimulateMoves(head *RopePoint, moves []Move) {
+func GetDistanceBetweenKnots(a *RopePoint, b *RopePoint) int {
+	return GetDistanceBetween(a.Position, b.Position)
+}
+
+func SimulateMoves(head *RopePoint, moves []Move, printStates bool) {
 	input := bufio.NewScanner(os.Stdin)
 	PrintState(head)
 	for _, move := range moves {
 		fmt.Printf("\n|| Move: %v %v ||\n", move.Size, move.Direction)
 		for _, step := range move.Steps {
 			head.Move(step)
-			PrintState(head)
-			input.Scan()
+			if printStates {
+				PrintState(head)
+				input.Scan()
+			}
 		}
 	}
 }
