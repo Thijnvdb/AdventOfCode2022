@@ -60,6 +60,7 @@ func (monkey *Monkey) Inspect(monkeys []*Monkey, relief bool, collectiveProduct 
 	item := itemRaw.(*Item)
 
 	newWorryLevel := monkey.OperationFunction(item.WorryLevel)
+
 	for newWorryLevel >= collectiveProduct {
 		newWorryLevel -= collectiveProduct
 	}

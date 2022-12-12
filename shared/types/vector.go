@@ -1,9 +1,16 @@
 package types
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type Vector struct {
 	X, Y int
+}
+
+func (v *Vector) ToString() string {
+	return fmt.Sprintf("(X: %v, Y: %v)", v.X, v.Y)
 }
 
 func ZeroVector() Vector {
