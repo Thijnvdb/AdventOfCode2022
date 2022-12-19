@@ -17,6 +17,12 @@ func ZeroVector() Vector {
 	return Vector{X: 0, Y: 0}
 }
 
+func GetManhattanDistanceBetween(a Vector, b Vector) int {
+	dx := math.Abs(float64(b.X - a.X))
+	dy := math.Abs(float64(b.Y - a.Y))
+	return int(dx + dy)
+}
+
 func GetDistanceBetween(a Vector, b Vector) int {
 	dx := math.Abs(float64(b.X - a.X))
 	dy := math.Abs(float64(b.Y - a.Y))
